@@ -45,6 +45,7 @@ class LoginViaAADController(webManager: WebControllerManager,
         val nonce = accessTokenFactory.create()
         val endpoint = aadSchemeProperties.appOAuthEndpoint
         val clientId = aadSchemeProperties.clientId
+        val currentUrl = request.getRequestURL().toString() + "?" + request.getQueryString()
         if (endpoint == null || clientId == null) return null
 
         val separator = if (endpoint.contains('?')) '&' else '?'
@@ -54,6 +55,7 @@ class LoginViaAADController(webManager: WebControllerManager,
                 .append("&scope=openid")
                 .append("&nonce=$nonce")
                 .append("&response_mode=form_post")
+                .append("&state=$currentUrl")
                 .apply {
                     aadSchemeProperties.authPrompt?.let {
                         if (it.isNotEmpty()) {
