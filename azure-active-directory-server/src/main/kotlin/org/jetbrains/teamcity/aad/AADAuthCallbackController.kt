@@ -33,6 +33,7 @@ class AADAuthCallbackController(
     }
 
     override fun doHandle(request: HttpServletRequest, response: HttpServletResponse): ModelAndView? {
-        return ModelAndView(RedirectView(rootUrlHolder.rootUrl))
+        var newRedirect = if (request.getParameter("state").isNotEmpty()) request.getParameter("state") else rootUrlHolder.rootUrl
+        return ModelAndView(RedirectView(newRedirect))
     }
 }
